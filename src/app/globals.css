@@ -1,107 +1,76 @@
 @import "tailwindcss";
 
+/* Tokens: warm paper, one beige panel, ink. Nothing else. */
 @theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-paper: #f4f1ec;
+  --color-panel: #ddd5c8;
+  --color-ink: #141312;
+  --color-muted: #77716a;
+  --color-line: #ddd7ce;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-serif: var(--font-bodoni), "Didot", "Times New Roman", serif;
 }
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 html {
-  scroll-behavior: smooth;
-  background: #050506;
+  background: var(--color-paper);
 }
 
 body {
-  background: #050506;
-  color: #fff;
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
 }
 
 ::selection {
-  background: rgba(255, 255, 255, 0.85);
-  color: #000;
+  background: var(--color-ink);
+  color: var(--color-paper);
 }
 
-.text-gradient {
-  background: linear-gradient(180deg, #ffffff 20%, rgba(255, 255, 255, 0.45) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+/* Tiny letter-spaced caps used for every label */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-muted);
 }
 
-/* Frosted card with a subtle gradient border */
-.glass-card {
-  background:
-    linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.02)),
-    rgba(10, 10, 14, 0.55);
-  backdrop-filter: blur(24px) saturate(140%);
-  -webkit-backdrop-filter: blur(24px) saturate(140%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    0 30px 80px -20px rgba(0, 0, 0, 0.6);
-  position: relative;
+/* Load-in: "backwards" fill so GSAP owns the element once the animation ends */
+.walk-enter {
+  animation: enter 1.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
 }
-.glass-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.04) 40%, rgba(255, 255, 255, 0.12));
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
-
-/* Light sweep across the buy button */
-.shine::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -60%;
-  width: 40%;
-  height: 100%;
-  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.9), transparent);
-  transform: skewX(-20deg);
-  animation: shine 3.2s ease-in-out infinite;
-}
-@keyframes shine {
-  0%,
-  60% {
-    left: -60%;
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
   }
-  100% {
-    left: 130%;
+}
+@keyframes settle {
+  from {
+    transform: scale(1.15);
   }
 }
 
-.marquee {
-  animation: marquee 32s linear infinite;
+/* Underline that draws in on hover */
+.link {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0% 1px no-repeat;
+  transition: background-size 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-.grain {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+.link:hover {
+  background-size: 100% 1px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  .marquee,
-  .shine::after {
-    animation: none;
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
   }
 }

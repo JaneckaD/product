@@ -1,13 +1,13 @@
-# AURA One – 3D produktová landing page
+# prostor. – web architektonického ateliéru
 
-Interaktivní landing page ve stylu produktových stránek Apple: 3D model, který se při scrollování otáčí a přibližuje na jednotlivé části, konfigurátor barev s cenou a galerie „v akci“.
+Minimalistický web ateliéru, který navrhuje moderní rodinné domy. Úvod vypadá jako stránka časopisu: papír, béžový panel, svislé logo a „fotka“ domu v rámečku. Při scrollování se rámeček roztáhne přes celou obrazovku a návštěvník projde 3D modelem domu z místnosti do místnosti (vstup → obývací prostor → kuchyň → ložnice → koupelna). Nakonec kamera vystoupá nad dům a ukáže ho celý jako řez. Ke každé zastávce patří krátký popis: co, jak, proč.
 
 ## Stack
 
 - Next.js 16 (App Router), React 19, Tailwind CSS 4
-- Three.js, React Three Fiber, @react-three/drei
-- GSAP + ScrollTrigger (scroll choreografie 3D modelu), Framer Motion (UI animace)
-- lucide-react (ikony)
+- Three.js, React Three Fiber, drei, @react-three/postprocessing (N8AO ambient occlusion)
+- GSAP ScrollTrigger (scroll → kamera, úvodní rámeček), Framer Motion (jemná odhalení v sekcích)
+- Písma: Bodoni Moda (nadpisy) a Inter (texty a popisky)
 
 ## Spuštění
 
@@ -16,23 +16,17 @@ npm install
 npm run dev
 ```
 
-Otevřete http://localhost:3000.
+Ve Windows PowerShellu použijte `npm.cmd install` a `npm.cmd run dev`.
 
-## Struktura
+## Kde co upravit
 
-| Soubor | Co dělá |
+| Soubor | Co v něm je |
 | --- | --- |
-| `src/components/Experience.tsx` | Skládá stránku, drží zvolenou variantu, napojuje ScrollTrigger na 3D scénu |
-| `src/components/three/Scene.tsx` | Canvas, světla, studiové prostředí, částice |
-| `src/components/three/Headphones.tsx` | Placeholder model sluchátek + klíčové snímky pro jednotlivé scroll sekce |
-| `src/components/sections/*` | HTML overlay: hero, informační karty, konfigurátor, galerie, patička |
-| `src/lib/product.ts` | Barevné varianty, ceny, edice a texty sekcí |
+| `src/lib/rooms.ts` | Texty místností (co / jak / proč) a dráha kamery |
+| `src/components/house/House.tsx` | 3D model domu: stěny, okna, nábytek, materiály |
+| `src/components/house/Walkthrough.tsx` | Kamera, slunce, stíny, ambient occlusion |
+| `src/components/Walk.tsx` | Úvodní kompozice, rámeček, scroll a texty přes scénu |
+| `src/components/sections/*` | Přístup, postup, projekty, kontakt |
+| `src/app/globals.css` | Barvy a typografické tokeny |
 
-## Vlastní .glb model
-
-1. Uložte model do `public/models/product.glb`.
-2. V `Headphones.tsx` nahraďte primitivní geometrii za `useGLTF("/models/product.glb")` uvnitř skupiny `<group ref={root}>` – scroll choreografie zůstane funkční.
-3. Barvu měňte přes materiály modelu (`materials.shell.color` apod.), stejně jako teď.
-4. Pozice hotspotů (`HOTSPOT_ANCHORS`) a klíčové snímky (`KEYFRAMES`) doladíte podle tvaru modelu.
-
-Fotky v galerii jsou zatím placeholdery z Unsplash (`src/components/sections/Gallery.tsx`).
+Fotky projektů (náhled při najetí myší) jsou zatím placeholdery z Unsplash.

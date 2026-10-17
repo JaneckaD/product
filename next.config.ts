@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   images: {
     remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com" }],
-    qualities: [75, 90],
+    qualities: [75, 80],
   },
   turbopack: {
     rules: {
